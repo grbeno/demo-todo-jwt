@@ -1,4 +1,4 @@
-##### Demo Todo JWT web application
+### Demo Todo JWT web application
 
 ---
 
