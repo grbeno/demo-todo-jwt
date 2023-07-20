@@ -4,11 +4,11 @@
 
 - This is a small, extendable Django and React web application using JWT for user authentication.
 
-###### (backend)
+#### (backend)
 - Python 3.10, pipenv, git
 - Django, custom user model, Django REST framework, serializers, JWT authentication, token blacklisting, class based views
 
-###### (frontend)
+#### (frontend)
 - nodejs, nvm-windows
 - ReactJS, context, axios, axios.interceptors
 
