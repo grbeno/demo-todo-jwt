@@ -8,10 +8,27 @@ export default AuthContext;
 
 export const AuthProvider = ({children}) => {
 
+    // signup
+    const signup = (e, errorCallback) => {
+        e.preventDefault();
+        axiosInstance.post('accounts/signup/', {
+            username: e.target.username.value,
+            password: e.target.password.value,
+            password2: e.target.password2.value,
+            about: e.target.about.value,
+        })
+        .then((response) => {
+            console.log(response);
+            window.location.href = '/login';
+        }).catch((error) => {
+            errorCallback('[' + error.response.data.affected_field + ']' + ' ' + error.response.data.error_message);  // "Already existed username or bad password! Try again."
+            console.log(error + ': ' + error.response.data.error_message);
+        });
+    };
+
     // login
     const login = (e, errorCallback) => {
         e.preventDefault();
-        
         axiosInstance.post('/api/token/', {
             username: e.target.username.value,
             password: e.target.password.value 
@@ -47,7 +64,7 @@ export const AuthProvider = ({children}) => {
         });
     };
 
-    const contextData = {login, logout};
+    const contextData = {signup, login, logout};
       
     return (
         <>

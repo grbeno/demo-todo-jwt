@@ -2,6 +2,8 @@
     background-color: #e5ecf7;
     padding: 1%;
     margin-top: 2%;
+    border-radius: 4px;
+    border: solid 0.6px #92b1e2;
 }
 
 .navbar {

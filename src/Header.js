@@ -26,7 +26,7 @@ const Header = () => {
                     </div>
                 )}
                 </>
-                <a className="h5 m-4 text-light d-block" href="/admin/"><span data-toggle="tooltip" title="django-admin"><i className="fa-solid fa-id-card-clip fa-2x"></i></span></a>
+                <a className="h5 m-4 text-light d-block" href="http://localhost:8000/admin/"><span data-toggle="tooltip" title="django-admin"><i className="fa-solid fa-id-card-clip fa-2x"></i></span></a>
             </nav>
         </header>
     )

@@ -12,9 +12,13 @@ export default function App() {
   // states
   const [todos, setTodos] = useState([]);
 
+  // path
+  const path = 'http://localhost:8000/api/'  // test
+  //const path = '/api/'
+
   // axios call
   const getTodos = () => {
-    axiosInstance.get('/api/').then(res => {
+    axiosInstance.get(path).then(res => {
       setTodos(res.data);
     })
     .catch(err => {
@@ -42,7 +46,7 @@ export default function App() {
         ))}
       </div>
     ) : (
-      <h4 className="d-flex p-4 justify-content-center">You are not logged in!</h4>
+      <div className="d-flex mt-3 justify-content-center"><p className="h5 p-4 text-primary rounded" style={{backgroundColor: '#c0f4d9'}}><i className="fa-solid fa-circle-info mx-3"></i>You are not logged in.</p></div>
     )}
   </>
   );
