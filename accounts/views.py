@@ -7,9 +7,17 @@ from django.http import JsonResponse
 
 
 class SignupView(APIView):
+    """
+    Create a new user.
+    Validate and serlialize the data between the frontend and the backend.
+    """
     permission_classes = [AllowAny]
 
     def post(self, request, format='json'):
+        # Validate if the passwords match
+        if request.data['password'] != request.data['password2']:
+            return JsonResponse({'error_message': 'Passwords do not match', 'affected_field': 'password2'}, status=status.HTTP_400_BAD_REQUEST)
+        
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()

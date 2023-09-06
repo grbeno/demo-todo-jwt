@@ -14,13 +14,13 @@ const Signup = () => {
         });
     };
 
-    const passwordMatch = (e) => {
+    /* const passwordMatch = (e) => {
         if (e.target.value !== e.target.form.password.value) {
             e.target.setCustomValidity("Passwords don't match!");
         } else {
             e.target.setCustomValidity("");
         }
-    };
+    }; */
 
     return (
         <>
@@ -28,7 +28,7 @@ const Signup = () => {
             <form onSubmit={handleSignup}>
                 <div className='p-2'><input className='p-2 text-center rounded' type="text" name="username" placeholder="username"/></div>
                 <div className='p-2'><input className='p-2 text-center rounded' type="password" name="password" placeholder="password"/></div>
-                <div className='p-2'><input className='p-2 text-center rounded' type="password" name="password2" placeholder="password again" onChange={passwordMatch}/></div>
+                <div className='p-2'><input className='p-2 text-center rounded' type="password" name="password2" placeholder="password again" /></div>
                 <div className='p-2'><input className='p-2 text-center rounded' type="text" name="about" placeholder="about you ..."/></div>
                 <div className='d-flex p-2 justify-content-center'><input className='p-2 px-3 bg-primary text-light border-0 rounded' type="submit" value="Signup" /></div>   
             </form>
