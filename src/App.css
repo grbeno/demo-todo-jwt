@@ -9,3 +9,12 @@
 .navbar {
     background-color: rgba(0,123,255,.25);
 }
+
+
+/* On smaller screens */
+
+@media screen and (max-width: 400px) {
+    .fa-solid {
+        font-size: 30px;
+    }
+}
