@@ -46,7 +46,7 @@ export default function App() {
         ))}
       </div>
     ) : (
-      <div className="d-flex mt-3 justify-content-center"><p className="h5 p-4 text-primary rounded" style={{backgroundColor: '#c0f4d9'}}><i className="fa-solid fa-circle-info mx-3"></i>You are not logged in.</p></div>
+      <div className="d-flex mt-3 justify-content-center"><h5 className="p-4 text-primary rounded" style={{backgroundColor: '#c0f4d9'}}><i className="sign-icon fa-solid fa-circle-info mx-3"></i>You are not logged in.</h5></div>
     )}
   </>
   );

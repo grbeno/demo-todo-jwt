@@ -33,7 +33,7 @@ const Signup = () => {
                 <div className='d-flex p-2 justify-content-center'><input className='p-2 px-3 bg-primary text-light border-0 rounded' type="submit" value="Signup" /></div>   
             </form>
         </div>
-        {error && <div className="d-flex mt-3 justify-content-center"><p className="h5 p-4 text-danger rounded" style={{backgroundColor: '#f4c0c0'}}><i className="fa-solid fa-triangle-exclamation mx-3"></i>{error}</p></div>}
+        {error && <div className="d-flex mt-3 justify-content-center"><h5 className="p-4 text-danger rounded" style={{backgroundColor: '#f4c0c0'}}><i className="sign-icon fa-solid fa-triangle-exclamation mx-3"></i>{error}</h5></div>}
         <div className='d-flex text-warning justify-content-center'>
             <ul>
             <hr />

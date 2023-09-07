@@ -32,5 +32,14 @@ class SignupView(APIView):
         
         return JsonResponse({'error_message': error_message, 'affected_field': affected_field}, status=status.HTTP_400_BAD_REQUEST)
 
-        
+
+class IsSuperuser(APIView):
+    """
+    Check if the user is superuser
+    """
+    def get(self, request):
+        user = request.user
+        is_superuser = user.is_superuser
+        return JsonResponse({'is_superuser': is_superuser})
+       
 

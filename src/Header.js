@@ -1,17 +1,33 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import './App.css';
 import {Link} from 'react-router-dom';
 import AuthContext from './AuthContext';
+import axiosInstance from './axios';
 
 
 const Header = () => {
 
     const {logout} = useContext(AuthContext)
     const token = localStorage.getItem('access_token');
+    const [superuser, setSuperuser] = useState(false);
 
     const handleLogout = () => {
         logout();
     };
+
+    // Check if the user is superuser
+    const isSuperuser = () => {
+        axiosInstance.get('accounts/is_superuser/', ).then(res => {
+            // console.log('isSuperuser: ' + res.data.is_superuser);
+            setSuperuser(res.data.is_superuser);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    useEffect(() => {       
+        isSuperuser();    
+    }, []);
 
     return(
         <header>
@@ -25,8 +41,8 @@ const Header = () => {
                         <Link to="/login"><span className="h5 text-success"><i className="fa-solid fa-user mx-2 fa-2x"></i></span></Link>
                     </div>
                 )}
+                {superuser && <a className="h5 m-4 text-light d-none d-md-block" href="http://localhost:8000/admin/"><span data-toggle="tooltip" title="django-admin"><i className="fa-solid fa-id-card-clip fa-2x"></i></span></a>}
                 </>
-                <a className="h5 m-4 text-light d-block" href="http://localhost:8000/admin/"><span data-toggle="tooltip" title="django-admin"><i className="fa-solid fa-id-card-clip fa-2x"></i></span></a>
             </nav>
         </header>
     )
