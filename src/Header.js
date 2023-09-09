@@ -18,7 +18,6 @@ const Header = () => {
     // Check if the user is superuser
     const isSuperuser = () => {
         axiosInstance.get('accounts/is_superuser/', ).then(res => {
-            // console.log('isSuperuser: ' + res.data.is_superuser);
             setSuperuser(res.data.is_superuser);
         }).catch(err => {
             console.log(err);
