@@ -4,6 +4,12 @@ import { expirationTime } from './utils';
 
 const baseURL = 'http://localhost:8000';
 
+// Function to get the CSRF token from Django
+const getCSRFToken = () => {
+    const csrfCookie = document.cookie.match(/csrftoken=([^;]*)/);
+    return csrfCookie ? csrfCookie[1] : null;
+};
+
 const axiosInstance = axios.create({
 	baseURL: baseURL,
 	timeout: 5000,
@@ -11,6 +17,7 @@ const axiosInstance = axios.create({
 		Authorization: localStorage.getItem('access_token')
 			? 'JWT ' + localStorage.getItem('access_token')
 			: null,
+        'X-CSRFToken': getCSRFToken(),
 		'Content-Type': 'application/json',
 		'Accept': 'application/json',
 	}, 
