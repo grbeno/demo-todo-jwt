@@ -2,7 +2,8 @@ import axios from 'axios';
 import { expirationTime } from './utils';
 
 
-const baseURL = 'http://localhost:8000';
+// call base url from .env file
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 // Function to get the CSRF token from Django
 const getCSRFToken = () => {
@@ -23,18 +24,19 @@ const axiosInstance = axios.create({
 	}, 
 });
 
+ // remove tokens
+ const removeTokens = (error) => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    delete axiosInstance.defaults.headers['Authorization'];
+    window.location.href = '/login';
+    return Promise.reject(error); 
+};
+
 // token flags
 const tokenFlags = {
     isRefreshing: false,
     refreshFailed: false,
-};
-
- // remove tokens
- const removeTokens = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    delete axiosInstance.defaults.headers['Authorization'];
-    window.location.reload();
 };
 
 // refresh token
@@ -42,31 +44,36 @@ axiosInstance.interceptors.response.use(
     response => response,
     error => {
         const originalRequest = error.config;
+        // console.log('response ' + JSON.stringify(error.response));
 
-        // Prevent infinite loops
         if (error.response.status === 401 && originalRequest.url === baseURL + '/api/token/refresh/') {
-            console.log('error 401');
-            return Promise.reject(error);
+            console.log('prevent loop - error 401');
+            window.location.href = '/login'; 
+            return Promise.reject(error);  // Prevent infinite loops
         }
 
-        if (error.response.data.code === "token_not_valid" && error.response.status === 401 && error.response.statusText === "Unauthorized") {
+        if (error.response.status === 401) {  
             
-            const refreshToken = localStorage.getItem('refresh_token') ? localStorage.getItem('refresh_token') : null;
+            if (expirationTime('refresh_token', false) < Date.now() / 1000) {  // refresh token expired
+                console.log("Refresh token expired.");
+                console.log('refresh_token_expired_@: ' + expirationTime('refresh_token'));
+                removeTokens(error);
+            }
+            
+            const refreshToken = localStorage.getItem('refresh_token');
+            
+            if (refreshToken) {  // refresh token available
 
-            if (refreshToken) {
-
-                const body = {
-                    refresh: refreshToken
-                };
-
-                if (!tokenFlags.isRefreshing && !tokenFlags.refreshFailed) {
+                if (!tokenFlags.isRefreshing && !tokenFlags.refreshFailed ) {         
                     tokenFlags.isRefreshing = true;
-
+                    
                     console.log('Access token expired. Attempting to refresh token ...');
                     console.log('access_token_expired_@: ' + expirationTime('access_token'));
                     
-                    return axiosInstance.post('/api/token/refresh/', body)
+                    return axiosInstance
+                    .post('/api/token/refresh/', { refresh: refreshToken })
                     .then((response) => {
+                        
                         localStorage.setItem('access_token', response.data.access);
                         localStorage.setItem('refresh_token', response.data.refresh);  // renew refresh token - authenticated while the user is active!
 
@@ -81,14 +88,16 @@ axiosInstance.interceptors.response.use(
                         return axiosInstance(originalRequest);
                     })
                     .catch(err => {
-                        console.log(err);
                         tokenFlags.refreshFailed = true;
-                    });
+                        console.log(err);
+                    })
+                    .finally (() => {
+                        window.location.href = '/chat';
+                    });   
                 }
                 else {
-                    console.log("Refresh token expired.");
-                    console.log('refresh_token_expired_@: ' + expirationTime('refresh_token'));
-                    removeTokens();
+                    console.log("Access token expired.");
+                    console.log('access_token_expired_@: ' + expirationTime('access_token'));
                 }
             }
             else {
@@ -96,8 +105,9 @@ axiosInstance.interceptors.response.use(
             }
         } 
         else {
-            return Promise.reject(error);
-        }
+            console.log("not 401 error");
+            return Promise.reject(error);   
+        }    
 });
 
 export default axiosInstance;

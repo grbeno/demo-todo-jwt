@@ -12,4 +12,7 @@
 - nodejs, nvm-windows
 - ReactJS, context, axios, axios.interceptors
 
+#### Variables
+- DEBUG, SECRET_KEY, REACT_APP_BASE_URL
+
 As for the details of the libraries and tools applied in this project, you can find them in the Pipfile, requirements.txt file (Django), and package.json files (React).
